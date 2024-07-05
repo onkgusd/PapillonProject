@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PapillonProject.Views.TypesPapillonPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:PapillonProject.ViewModels"  
+             xmlns:model="clr-namespace:PapillonProject.Models" xmlns:converter="clr-namespace:PapillonProject.Converter"
+             x:Name="BrowseTypesPapillonPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout>
+        <ActivityIndicator IsRunning="true" IsVisible="{Binding IsBusy}" />
+        <CollectionView x:Name="ItemsListView"
+                ItemsSource="{Binding Items}"
+                SelectionMode="None"
+                IsVisible="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <FlexLayout Padding="10"
+                                x:DataType="model:TypePapillon">
+                        <Grid>
+                            <Image Source="{Binding Image}"
+                                   HorizontalOptions="FillAndExpand"
+                                   HeightRequest="100"
+                                   Aspect="AspectFit" />
+                            <Label Text="{Binding Nom}"
+                                   Grid.Column="1"
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="Large"
+                                   WidthRequest="3000" VerticalTextAlignment="Center"/>
+                            <ImageButton Source="icon_see.png"
+                                         BackgroundColor="{StaticResource Primary}"
+                                         HeightRequest="10"
+                                         WidthRequest="10"
+                                         Clicked="ImageButton_Clicked"
+                                         BindingContext="{Binding .}"
+                                         Grid.Column="2" />
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                        <FlexLayout.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:TypesPapillonViewModel}}, Path=ItemTapped}"		
+                                CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </FlexLayout.GestureRecognizers>
+                    </FlexLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

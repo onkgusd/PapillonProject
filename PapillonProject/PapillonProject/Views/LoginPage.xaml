@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:converter="clr-namespace:PapillonProject.Converter"
+             mc:Ignorable="d"
+             x:Class="PapillonProject.Views.LoginPage"
+             Shell.NavBarIsVisible="False">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content IsEnabled="{Binding Path=IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+        <StackLayout Padding="10,0,10,0" VerticalOptions="Center" IsEnabled="{Binding IsNotBusy, Mode=OneWay}">
+            <ActivityIndicator IsRunning="true" IsVisible="{Binding IsBusy}" />
+            <ContentView Padding="0,40,0,0" VerticalOptions="FillAndExpand">
+                <Image Source="papillon_logo.png" VerticalOptions="Center" HeightRequest="200" />
+            </ContentView>
+            <Label FontSize="22" Padding="0,24,0,50" HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="Bienvenue sur "/>
+                            <Span Text="Butter'find" FontAttributes="Bold" TextColor="{StaticResource Primary}" FontSize="22"/>
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Entry x:Name="Login" Text="{Binding Login, Mode=TwoWay}" Placeholder="Nom d'utilisateur" />
+            <Button VerticalOptions="Center"
+                    Text="Se connecter"
+                    Command="{Binding LoginCommand}"
+                    IsEnabled="{Binding CanLogIn}"/>
+            <Label IsVisible="{Binding LoginError}" Text="Erreur lors de l'identification." TextColor="Red" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

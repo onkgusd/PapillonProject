@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             x:Class="PapillonProject.Views.MapPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Switch IsToggled="{Binding AllUsers}"/>
+                <Label VerticalTextAlignment="center"
+                       Text="Voir les observations de tous les utilisateurs" />
+        </StackLayout>
+        <maps:Map x:Name="map" 
+                      ItemsSource="{Binding Observations}"
+                      IsShowingUser="true">
+                <maps:Map.ItemTemplate>
+                    <DataTemplate>
+                        <maps:Pin Position="{Binding Position}"
+                              Label="{Binding Label}"
+                              Type="{Binding Type}" />
+                    </DataTemplate>
+                </maps:Map.ItemTemplate>
+            </maps:Map>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

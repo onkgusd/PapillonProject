@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PapillonProject.Views.TypePapillonDetailPage"
+             Title="{Binding Title}">
+    <StackLayout>
+        <StackLayout Spacing="20" Padding="15" VerticalOptions="StartAndExpand">
+            <Image Source="{Binding Image}" />
+            <Label Text="{Binding Texte}" FontSize="Medium"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal"
+                     VerticalOptions="End"
+                     HorizontalOptions="CenterAndExpand">
+            <Entry x:Name="NbSpecimen"
+                   Text="{Binding NbSpecimen, Mode=TwoWay}" 
+                   Keyboard="Numeric"
+                   WidthRequest="100"
+                   MaxLength="2">
+            </Entry>
+            <ImageButton Source="icon_see.png"
+                         BackgroundColor="{StaticResource Primary}"
+                         Command="{Binding AddObservationCommand}"
+                         HeightRequest="100"
+                         HorizontalOptions="CenterAndExpand"
+                         WidthRequest="400"
+                         IsEnabled="{Binding CanSendObservation}"/>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

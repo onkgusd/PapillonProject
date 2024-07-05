@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PapillonProject.ViewModels"  
+             xmlns:model="clr-namespace:PapillonProject.Models"  
+             xmlns:converter="clr-namespace:PapillonProject.Converter"  
+             x:Class="PapillonProject.Views.ObservationsPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <RefreshView x:DataType="local:ObservationsViewModel"
+                 Command="{Binding LoadItemsCommand}"
+                 IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+        
+        <CollectionView x:Name="ObservationsListView"
+                ItemsSource="{Binding Items}"
+                SelectionMode="None">
+            <CollectionView.Header>
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Switch IsToggled="{Binding SearchByPays}"/>
+                        <Label Text="Recherche par pays" />
+                    </StackLayout>
+
+                    <Picker Title="Ville"
+                            ItemsSource="{Binding Villes}"
+                            SelectedItem="{Binding Path=SelectedVille, Mode=TwoWay}"
+                            IsVisible="{Binding Path=SearchByPays, Converter={StaticResource InverseBooleanConverter}}"/>
+                    <Picker Title="Pays"
+                            ItemsSource="{Binding Pays}"
+                            SelectedItem="{Binding Path=SelectedPays, Mode=TwoWay}"
+                            IsVisible="{Binding Path=SearchByPays}"/>
+                </StackLayout>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <FlexLayout x:DataType="model:Observation" Padding="10">
+                        <Grid>
+                            <Label Text="{Binding Papillon.Nom}"
+                                   Grid.ColumnSpan="2"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   Margin="10"/>
+                            <Image Source="{Binding Papillon.Image}"
+                                   WidthRequest="120"
+                                   Grid.RowSpan="4"
+                                   Grid.Row="1"/>
+                            <Label Text="{Binding Date, StringFormat='{}{0:dd/MM/yyyy à hh:mm}'}"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16"/>
+                            <Label Text="{Binding User}"
+                                  Grid.Row="2"
+                                   Grid.Column="1"
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16"
+                                   FontAttributes="Bold"/>
+                            <Label Text="{Binding City}"
+                                   Grid.Row="3"
+                                   Grid.Column="1"
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16"/>
+                            <Label Text="{Binding Country}"
+                                   Grid.Row="4"
+                                   Grid.Column="1"
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16"
+                                   FontAttributes="Italic"/>
+                            <Label Text="{Binding Compte}" Grid.Column="1" Grid.Row="5"/>
+                            <Label Text="specimen"  Grid.Column="1" Grid.Row="5">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding Compte}" TextColor="Red" FontAttributes="Bold" />
+                                        <Span Text=" specimen(s)" Style="{DynamicResource BodyStyle}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                        <FlexLayout.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ObservationsViewModel}}, Path=ItemTapped}"		
+                                CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </FlexLayout.GestureRecognizers>
+                    </FlexLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>
